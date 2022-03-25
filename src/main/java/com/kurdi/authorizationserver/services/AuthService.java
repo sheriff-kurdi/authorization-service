@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class UsersAuthService {
+public class AuthService {
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
@@ -39,6 +39,42 @@ public class UsersAuthService {
 
         }
 
+        user.setPassword(null);
         return user;
     }
+
+    public IdentityUser login(UserNameAndPasswordAuthenticationRequest authenticationRequest) {
+        Set<Authority> authorities = new HashSet<>();
+
+        IdentityUser user = IdentityUser.builder()
+                .userName(authenticationRequest.getUsername())
+                .password(passwordEncoder.encode(authenticationRequest.getPassword()))
+                .authorities(authorities)
+                .build();
+
+
+
+        if (usersRepository.findUserByUserName(user.getUserName()).isEmpty()) {
+            return null;
+        }else{
+
+        }
+
+        return usersRepository.findUserByUserName(user.getUserName()).get();
+    }
+
+    public IdentityUser addAuthorities(Integer userId ,Set<Authority> authorities)
+    {
+        IdentityUser user = usersRepository.getById(userId);
+        if(user == null)
+        {
+            //TODO:return domain exception
+            return null;
+        }
+        user.getAuthorities().addAll(authorities);
+        usersRepository.save(user);
+        return  user;
+    }
+
+
 }

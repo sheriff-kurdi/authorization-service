@@ -1,19 +1,27 @@
 package com.kurdi.authorizationserver.controllers;
 
+import com.kurdi.authorizationserver.entities.Authority;
+import com.kurdi.authorizationserver.entities.IdentityUser;
+import com.kurdi.authorizationserver.repositories.AuthoritiesRepository;
 import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
-import com.kurdi.authorizationserver.services.UsersAuthService;
+import com.kurdi.authorizationserver.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 public class AuthorizationController {
     @Autowired
-    UsersAuthService usersAuthService;
+    AuthService authService;
+    @Autowired
+    AuthoritiesRepository authoritiesRepository;
+
     @GetMapping("/")
     public String index()
     {
@@ -26,17 +34,24 @@ public class AuthorizationController {
         return "hello admin";
     }
 
-    @PostMapping("/login")
-    public String login(UserNameAndPasswordAuthenticationRequest authenticationRequest)
-    {
-        return "Ok";
-    }
+
 
     @PostMapping("/register")
-    public String register( @RequestBody UserNameAndPasswordAuthenticationRequest authenticationRequest)
+    public ResponseEntity<IdentityUser> register(@RequestBody UserNameAndPasswordAuthenticationRequest authenticationRequest)
     {
-        usersAuthService.register(authenticationRequest);
-        //return  token
-        return "Ok";
+
+        IdentityUser user = authService.register(authenticationRequest);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+/*    @PostMapping
+    public ResponseEntity<IdentityUser> addAuthorities(Integer userId, Set<Authority> authorities)
+    {
+
+    }*/
+    @GetMapping("/")
+    public ResponseEntity<List<Authority>> authorities()
+    {
+        return new ResponseEntity<>(authoritiesRepository.findAll(), HttpStatus.OK);
     }
 }
