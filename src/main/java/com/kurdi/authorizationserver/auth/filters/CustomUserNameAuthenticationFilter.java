@@ -1,7 +1,7 @@
 package com.kurdi.authorizationserver.auth.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kurdi.authorizationserver.requests.UsernameAndPasswordAuthenticationRequest;
+import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,8 +32,8 @@ public class CustomUserNameAuthenticationFilter extends UsernamePasswordAuthenti
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         try {
-            UsernameAndPasswordAuthenticationRequest authenticationRequest = new ObjectMapper()
-                    .readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
+            UserNameAndPasswordAuthenticationRequest authenticationRequest = new ObjectMapper()
+                    .readValue(request.getInputStream(), UserNameAndPasswordAuthenticationRequest.class);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(),
