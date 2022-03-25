@@ -36,9 +36,7 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter {
         String userId = "";
         try {
             String secret = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
-            Key key = new SecretKeySpec(Base64.getDecoder().decode(secret),
-
-                    SignatureAlgorithm.HS256.getJcaName());
+            Key key = new SecretKeySpec(Base64.getDecoder().decode(secret), SignatureAlgorithm.HS256.getJcaName());
             Claims jwtClaims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authorizationHeader).getBody();
             userId = jwtClaims.getId();
 
@@ -48,6 +46,7 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter {
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
+        //TODO: get auth from token payload.
         authorities.add(new SimpleGrantedAuthority(Roles.ADMIN.getRole()));
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userId,
