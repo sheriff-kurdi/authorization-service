@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
-
 import java.util.Set;
 
 @Entity
@@ -16,13 +14,14 @@ import java.util.Set;
 @Table(name = "identity_Users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdentityUser  {
+public class IdentityUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;    String userName;
+    Integer id;
+    String userName;
     String password;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     Set<Authority> authorities;
 
 }

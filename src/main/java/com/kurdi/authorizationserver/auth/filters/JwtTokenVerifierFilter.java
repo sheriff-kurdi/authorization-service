@@ -1,11 +1,12 @@
 package com.kurdi.authorizationserver.auth.filters;
 
 import com.google.common.base.Strings;
-import com.kurdi.authorizationserver.auth.Roles;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class JwtTokenVerifierFilter extends OncePerRequestFilter {
@@ -31,27 +33,29 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
+        List<SimpleGrantedAuthority> userAuthorities = new ArrayList<SimpleGrantedAuthority>();
         //token verification logic
         String userId = "";
         try {
             String secret = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
             Key key = new SecretKeySpec(Base64.getDecoder().decode(secret), SignatureAlgorithm.HS256.getJcaName());
+            authorizationHeader = authorizationHeader.split(" ")[1];
             Claims jwtClaims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authorizationHeader).getBody();
             userId = jwtClaims.getId();
+            ArrayList<LinkedHashMap<String, String>> a = (ArrayList<LinkedHashMap<String, String>>) jwtClaims.get("authorities");
+            a.stream().forEach(aa -> userAuthorities.add(new SimpleGrantedAuthority(aa.values().stream().findFirst().get())));
 
         } catch (JwtException e) {
             //don't trust the JWT!
             filterChain.doFilter(request, response);
         }
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
+
         //TODO: get auth from token payload.
-        authorities.add(new SimpleGrantedAuthority(Roles.ADMIN.getRole()));
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userId,
                 null,
-                authorities
+                userAuthorities
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

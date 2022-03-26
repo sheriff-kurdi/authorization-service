@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,11 @@ public class AccountsController {
     @Autowired
     AuthService authService;
 
+    @GetMapping("/admin")
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    public String admin() {
+        return "admin";
+    }
 
     @PostMapping("/register")
     public ResponseEntity<IdentityUser> register(@RequestBody UserNameAndPasswordAuthenticationRequest authenticationRequest) {

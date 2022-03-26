@@ -1,6 +1,7 @@
 package com.kurdi.authorizationserver.auth.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kurdi.authorizationserver.entities.Authority;
 import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Key;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CustomUserNameAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     AuthenticationManager authenticationManager;
@@ -58,15 +61,20 @@ public class CustomUserNameAuthenticationFilter extends UsernamePasswordAuthenti
 
         //TODO:from config
         /*TODO:
-        * secret key from consumer
-        * To make it secure so only consumer service that can decode that token to get authorities
-        * */
+         * secret key from consumer
+         * To make it secure so only consumer service that can decode that token to get authorities
+         * */
         String secret = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
-        Key key = new SecretKeySpec(Base64.getDecoder().decode(secret),SignatureAlgorithm.HS256.getJcaName());
+        Key key = new SecretKeySpec(Base64.getDecoder().decode(secret), SignatureAlgorithm.HS256.getJcaName());
+
+        Set<Authority> authoritySet = new HashSet<Authority>();
+        authoritySet.add(Authority.builder().name("admin").build());
+        authoritySet.add(Authority.builder().name("user").build());
 
         //TODO: Put user authorities
         String jwtToken = Jwts.builder()
                 .setId(userId)
+                .claim("authorities", authoritySet)
                 .setSubject("kurdi").signWith(key).compact();
 
 
