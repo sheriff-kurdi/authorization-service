@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Data
@@ -15,13 +16,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Authorities")
-public class Authority implements Serializable {
+public class Authority {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     private String name;
-    @JoinColumn(name = "identity_users")
-    @ManyToOne
+
+    @ManyToMany
     @JsonIgnore
-    private IdentityUser identityUser;
+    private Set<IdentityUser> user;
 }

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,16 +33,14 @@ public class AuthService {
                 .build();
 
 
-
         if (usersRepository.findUserByUserName(user.getUserName()).isEmpty()) {
-            usersRepository.save(user);
             //TODO when creating user make an app event to create his cart instead of making it here.
             usersRepository.save(user);
-
         }
 
-        user.setPassword(null);
-        return user;
+        return IdentityUser.builder()
+                .userName(user.getUserName())
+                .id(user.getId()).build();
     }
 
     public IdentityUser login(UserNameAndPasswordAuthenticationRequest authenticationRequest) {
@@ -53,28 +53,44 @@ public class AuthService {
                 .build();
 
 
-
         if (usersRepository.findUserByUserName(user.getUserName()).isEmpty()) {
             return null;
-        }else{
+        } else {
 
         }
 
         return usersRepository.findUserByUserName(user.getUserName()).get();
     }
 
-    public IdentityUser addAuthorities(Integer userId ,Set<Authority> authorities)
-    {
+    public IdentityUser addAuthorities(Integer userId, Set<Authority> authorities) {
         IdentityUser user = usersRepository.getById(userId);
-        if(user == null)
-        {
+        if (user == null) {
             //TODO:return domain exception
             return null;
         }
         user.getAuthorities().addAll(authorities);
+
         usersRepository.save(user);
-        return  user;
+        return usersRepository.getById(userId);
     }
 
+    public IdentityUser removeAuthorities(Integer userId, Set<Authority> authorities) {
+        IdentityUser user = usersRepository.getById(userId);
+        if (user == null) {
+            //TODO:return domain exception
+            return null;
+        }
+
+
+        List<Authority> usersAuthTORemove = user.getAuthorities()
+                .stream()
+                .filter(userAuth -> authorities.stream()
+                        .anyMatch(requestAuth -> requestAuth.getName().equalsIgnoreCase(userAuth.getName())))
+                .collect(Collectors.toList());
+
+        user.getAuthorities().removeAll(usersAuthTORemove);
+        usersRepository.save(user);
+        return usersRepository.getById(userId);
+    }
 
 }

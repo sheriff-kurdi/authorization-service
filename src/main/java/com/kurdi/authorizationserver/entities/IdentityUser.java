@@ -16,12 +16,13 @@ import java.util.Set;
 @Table(name = "identity_Users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdentityUser  implements Serializable {
+public class IdentityUser  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;    String userName;
     String password;
-    @OneToMany(mappedBy = "identityUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @ManyToMany()
     Set<Authority> authorities;
 
 }
