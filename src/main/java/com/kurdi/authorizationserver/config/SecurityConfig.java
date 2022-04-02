@@ -4,6 +4,7 @@ package com.kurdi.authorizationserver.config;
 import com.kurdi.authorizationserver.auth.CustomAuthenticationProvider;
 import com.kurdi.authorizationserver.auth.filters.CustomUserNameAuthenticationFilter;
 import com.kurdi.authorizationserver.auth.filters.JwtTokenVerifierFilter;
+import com.kurdi.authorizationserver.repositories.IdentityUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     CustomAuthenticationProvider authenticationProvider;
+    @Autowired
+    IdentityUsersRepository identityUsersRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -29,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new CustomUserNameAuthenticationFilter(authenticationManager()))
+                .addFilter(new CustomUserNameAuthenticationFilter(authenticationManager(), identityUsersRepository))
                 .addFilterAfter(new JwtTokenVerifierFilter(), CustomUserNameAuthenticationFilter.class)
                 .authorizeRequests()
                 .mvcMatchers("/user")
