@@ -85,5 +85,10 @@ public class CustomUserNameAuthenticationFilter extends UsernamePasswordAuthenti
 
 
         response.addHeader("Authentication", jwtToken);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(
+                "{\"" + "token" + "\":\"" + jwtToken + "\"}"
+        );
     }
 }
