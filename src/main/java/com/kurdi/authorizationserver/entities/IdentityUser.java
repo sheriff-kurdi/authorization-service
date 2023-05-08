@@ -6,15 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Data
 @Builder
-@Table(name = "identity_Users")
+@Table(name = "identity_users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdentityUser {
+public class IdentityUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -22,6 +24,6 @@ public class IdentityUser {
     String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    Set<Authority> authorities;
+    private Set<Authority> authorities;
 
 }

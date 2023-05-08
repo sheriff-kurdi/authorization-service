@@ -1,6 +1,5 @@
 package com.kurdi.authorizationserver.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,13 +14,12 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "authorities")
-public class Authority implements Serializable{
+@Table(name = "projects")
+public class Project implements Serializable{
     @Id
     private String name;
-
-    @ManyToMany
-    @JsonIgnore
-    private Set<IdentityUser> users;
+    private String description;
+    @OneToMany
+    private Set<Module> modules;
 
 }
