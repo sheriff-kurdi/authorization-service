@@ -1,6 +1,6 @@
 package com.kurdi.authorizationserver.auth;
 
-import com.kurdi.authorizationserver.entities.IdentityUser;
+import com.kurdi.authorizationserver.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +9,9 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
-    private final IdentityUser user;
+    private final User user;
 
-    public CustomUserDetails(IdentityUser user){
+    public CustomUserDetails(User user){
         this.user = user;
     }
     @Override

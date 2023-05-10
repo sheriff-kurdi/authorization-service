@@ -2,7 +2,7 @@ package com.kurdi.authorizationserver.services;
 
 
 import com.kurdi.authorizationserver.entities.Authority;
-import com.kurdi.authorizationserver.entities.IdentityUser;
+import com.kurdi.authorizationserver.entities.User;
 import com.kurdi.authorizationserver.repositories.IdentityUsersRepository;
 import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,10 @@ public class AuthService {
     @Autowired
     IdentityUsersRepository usersRepository;
 
-    public IdentityUser register(UserNameAndPasswordAuthenticationRequest authenticationRequest) {
+    public User register(UserNameAndPasswordAuthenticationRequest authenticationRequest) {
         Set<Authority> authorities = new HashSet<>();
 
-        IdentityUser user = IdentityUser.builder()
+        User user = User.builder()
                 .userName(authenticationRequest.getUsername())
                 .password(passwordEncoder.encode(authenticationRequest.getPassword()))
                 .authorities(authorities)
@@ -38,15 +38,15 @@ public class AuthService {
             usersRepository.save(user);
         }
 
-        return IdentityUser.builder()
+        return User.builder()
                 .userName(user.getUserName())
                 .id(user.getId()).build();
     }
 
-    public IdentityUser login(UserNameAndPasswordAuthenticationRequest authenticationRequest) {
+    public User login(UserNameAndPasswordAuthenticationRequest authenticationRequest) {
         Set<Authority> authorities = new HashSet<>();
 
-        IdentityUser user = IdentityUser.builder()
+        User user = User.builder()
                 .userName(authenticationRequest.getUsername())
                 .password(passwordEncoder.encode(authenticationRequest.getPassword()))
                 .authorities(authorities)
@@ -62,8 +62,8 @@ public class AuthService {
         return usersRepository.findUserByUserName(user.getUserName()).get();
     }
 
-    public IdentityUser addAuthorities(Integer userId, Set<Authority> authorities) {
-        IdentityUser user = usersRepository.getById(userId);
+    public User addAuthorities(Integer userId, Set<Authority> authorities) {
+        User user = usersRepository.getById(userId);
         if (user == null) {
             //TODO:return domain exception
             return null;
@@ -74,8 +74,8 @@ public class AuthService {
         return usersRepository.getById(userId);
     }
 
-    public IdentityUser removeAuthorities(Integer userId, Set<Authority> authorities) {
-        IdentityUser user = usersRepository.getById(userId);
+    public User removeAuthorities(Integer userId, Set<Authority> authorities) {
+        User user = usersRepository.getById(userId);
         if (user == null) {
             //TODO:return domain exception
             return null;

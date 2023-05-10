@@ -18,6 +18,9 @@ public class Action implements Serializable{
     @Id
     private String name;
     private String description;
+    @ManyToOne
+    @JoinColumn(name="module_id", nullable=false)
+    private Module module;
 
 
 

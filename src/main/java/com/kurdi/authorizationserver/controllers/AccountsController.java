@@ -1,6 +1,6 @@
 package com.kurdi.authorizationserver.controllers;
 
-import com.kurdi.authorizationserver.entities.IdentityUser;
+import com.kurdi.authorizationserver.entities.User;
 import com.kurdi.authorizationserver.requests.AddAuthoritiesRequest;
 import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
 import com.kurdi.authorizationserver.services.AuthService;
@@ -26,16 +26,16 @@ public class AccountsController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<IdentityUser> register(@RequestBody UserNameAndPasswordAuthenticationRequest authenticationRequest) {
+    public ResponseEntity<User> register(@RequestBody UserNameAndPasswordAuthenticationRequest authenticationRequest) {
 
-        IdentityUser user = authService.register(authenticationRequest);
+        User user = authService.register(authenticationRequest);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("addAuthorities")
-    public ResponseEntity<IdentityUser> addAuthorities(@RequestBody AddAuthoritiesRequest addAuthoritiesRequest) {
-        IdentityUser user = authService.addAuthorities(addAuthoritiesRequest.getUserId(), addAuthoritiesRequest.getAuthorities());
+    public ResponseEntity<User> addAuthorities(@RequestBody AddAuthoritiesRequest addAuthoritiesRequest) {
+        User user = authService.addAuthorities(addAuthoritiesRequest.getUserId(), addAuthoritiesRequest.getAuthorities());
         if (user.getUserName() == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
@@ -44,8 +44,8 @@ public class AccountsController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("removeAuthorities")
-    public ResponseEntity<IdentityUser> removeAuthorities(@RequestBody AddAuthoritiesRequest addAuthoritiesRequest) {
-        IdentityUser user = authService.removeAuthorities(addAuthoritiesRequest.getUserId(), addAuthoritiesRequest.getAuthorities());
+    public ResponseEntity<User> removeAuthorities(@RequestBody AddAuthoritiesRequest addAuthoritiesRequest) {
+        User user = authService.removeAuthorities(addAuthoritiesRequest.getUserId(), addAuthoritiesRequest.getAuthorities());
         if (user.getUserName() == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

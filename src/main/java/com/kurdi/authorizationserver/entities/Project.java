@@ -18,8 +18,10 @@ import java.util.Set;
 public class Project implements Serializable{
     @Id
     private String name;
+
     private String description;
-    @OneToMany
+
+    @OneToMany(mappedBy="project")
     private Set<Module> modules;
 
 }

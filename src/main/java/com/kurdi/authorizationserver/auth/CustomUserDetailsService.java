@@ -1,7 +1,7 @@
 package com.kurdi.authorizationserver.auth;
 
 
-import com.kurdi.authorizationserver.entities.IdentityUser;
+import com.kurdi.authorizationserver.entities.User;
 import com.kurdi.authorizationserver.repositories.IdentityUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Supplier<UsernameNotFoundException> usernameNotFoundExceptionSupplier =
                 () -> new UsernameNotFoundException("Problem during authentication!");
 
-        IdentityUser u = usersRepository
+        User u = usersRepository
                 .findUserByUserName(userName)
                 .orElseThrow(usernameNotFoundExceptionSupplier);
 

@@ -1,7 +1,7 @@
 package com.kurdi.authorizationserver.auth.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kurdi.authorizationserver.entities.IdentityUser;
+import com.kurdi.authorizationserver.entities.User;
 import com.kurdi.authorizationserver.repositories.IdentityUsersRepository;
 import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
 import io.jsonwebtoken.Jwts;
@@ -75,7 +75,7 @@ public class CustomUserNameAuthenticationFilter extends UsernamePasswordAuthenti
         Object principal = authResult.getPrincipal();
         String username = principal.toString();
 
-        IdentityUser identityUser = identityUsersRepository.findUserByUserName(username).get();
+        User identityUser = identityUsersRepository.findUserByUserName(username).get();
 
         //TODO: Put user authorities
         String jwtToken = Jwts.builder()

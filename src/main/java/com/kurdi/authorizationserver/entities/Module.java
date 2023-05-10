@@ -15,11 +15,17 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "modules")
-public class Module implements Serializable{
+public class Module implements Serializable {
     @Id
     private String name;
+
     private String description;
-    @OneToMany
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
+
+    @OneToMany(mappedBy = "module")
     private Set<Action> actions;
 
 }

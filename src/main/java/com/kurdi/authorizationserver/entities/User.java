@@ -13,10 +13,10 @@ import java.util.Set;
 @Entity
 @Data
 @Builder
-@Table(name = "identity_users")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdentityUser implements Serializable {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -24,6 +24,7 @@ public class IdentityUser implements Serializable {
     String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "authority_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<Authority> authorities;
 
 }
