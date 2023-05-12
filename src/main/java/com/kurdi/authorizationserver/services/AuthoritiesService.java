@@ -53,7 +53,7 @@ public class AuthoritiesService {
         return this.modulesRepository.save(module);
     }
 
-    public List<Action> addAction(List<AddActionVM> addActionVMs) {
+    public List<Action> addActions(List<AddActionVM> addActionVMs) {
         List<Action> actions = new ArrayList<>();
 
         for (AddActionVM addActionVM : addActionVMs) {
