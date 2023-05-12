@@ -1,4 +1,4 @@
-package com.kurdi.authorizationserver.requests;
+package com.kurdi.authorizationserver.vm;
 
 import com.kurdi.authorizationserver.entities.Authority;
 import lombok.Data;

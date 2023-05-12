@@ -3,6 +3,8 @@ package com.kurdi.authorizationserver.controllers;
 import com.kurdi.authorizationserver.entities.Authority;
 import com.kurdi.authorizationserver.repositories.AuthoritiesRepository;
 import com.kurdi.authorizationserver.services.AuthService;
+import com.kurdi.authorizationserver.vm.projects.AddProjectVM;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,4 +35,14 @@ public class AuthoritiesController {
 
         return new ResponseEntity<>(authoritiesRepository.save(authority), HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<Authority> addProject(AddProjectVM request)
+    {
+
+        return new ResponseEntity<>(authoritiesRepository.save(authority), HttpStatus.OK);
+    }
+
+
+
 }

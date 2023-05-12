@@ -4,7 +4,8 @@ package com.kurdi.authorizationserver.services;
 import com.kurdi.authorizationserver.entities.Authority;
 import com.kurdi.authorizationserver.entities.User;
 import com.kurdi.authorizationserver.repositories.IdentityUsersRepository;
-import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
+import com.kurdi.authorizationserver.vm.UserNameAndPasswordAuthenticationRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,9 +56,7 @@ public class AuthService {
 
         if (usersRepository.findUserByUserName(user.getUserName()).isEmpty()) {
             return null;
-        } else {
-
-        }
+        } 
 
         return usersRepository.findUserByUserName(user.getUserName()).get();
     }

@@ -3,7 +3,8 @@ package com.kurdi.authorizationserver.auth.filters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kurdi.authorizationserver.entities.User;
 import com.kurdi.authorizationserver.repositories.IdentityUsersRepository;
-import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
+import com.kurdi.authorizationserver.vm.UserNameAndPasswordAuthenticationRequest;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;

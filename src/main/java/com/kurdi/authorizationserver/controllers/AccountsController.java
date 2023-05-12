@@ -1,9 +1,10 @@
 package com.kurdi.authorizationserver.controllers;
 
 import com.kurdi.authorizationserver.entities.User;
-import com.kurdi.authorizationserver.requests.AddAuthoritiesRequest;
-import com.kurdi.authorizationserver.requests.UserNameAndPasswordAuthenticationRequest;
 import com.kurdi.authorizationserver.services.AuthService;
+import com.kurdi.authorizationserver.vm.AddAuthoritiesRequest;
+import com.kurdi.authorizationserver.vm.UserNameAndPasswordAuthenticationRequest;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
