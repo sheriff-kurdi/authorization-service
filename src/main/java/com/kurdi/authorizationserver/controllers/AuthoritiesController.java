@@ -32,49 +32,37 @@ public class AuthoritiesController {
     @Autowired
     AuthoritiesRepository authoritiesRepository;
 
-    @GetMapping
-    public ResponseEntity<List<Authority>> authorities()
-    {
-        return new ResponseEntity<>(authoritiesRepository.findAll(), HttpStatus.OK);
-    }
 
-    @PostMapping
-    public ResponseEntity<Authority> addAuthority(Authority authority)
-    {
-
-        return new ResponseEntity<>(authoritiesRepository.save(authority), HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<Project> addProject(AddProjectVM addProjectVM)
+    @PostMapping(value = "add-project")
+    public ResponseEntity<Object> addProject(AddProjectVM addProjectVM)
     {
         try{
-           Project project = authoritiesService.addProject(addProjectVM);
-           return new ResponseEntity<>(project, HttpStatus.OK);
+           authoritiesService.addProject(addProjectVM);
+           return new ResponseEntity<>("Created Successfully", HttpStatus.CREATED);
 
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Module> addModule(AddModuleVM addModuleVM)
+    @PostMapping(value = "add-module")
+    public ResponseEntity<Object> addModule(AddModuleVM addModuleVM)
     {
         try{
-            Module module = authoritiesService.addModule(addModuleVM);
-           return new ResponseEntity<>(module, HttpStatus.OK);
+            authoritiesService.addModule(addModuleVM);
+            return new ResponseEntity<>("Created Successfully", HttpStatus.CREATED);
 
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping
-    public ResponseEntity<List<Action>> addActions(List<AddActionVM> addActionVMs)
+    @PostMapping(value = "add-actions")
+    public ResponseEntity<Object> addActions(List<AddActionVM> addActionVMs)
     {
         try{
-            List<Action> actions = authoritiesService.addActions(addActionVMs);
-           return new ResponseEntity<>(actions, HttpStatus.OK);
+            authoritiesService.addActions(addActionVMs);
+           return new ResponseEntity<>("Created Successfully", HttpStatus.CREATED);
 
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
