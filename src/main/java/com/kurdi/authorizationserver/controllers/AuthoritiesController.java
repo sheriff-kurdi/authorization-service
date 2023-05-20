@@ -17,9 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,7 +36,7 @@ public class AuthoritiesController {
 
 
     @PostMapping(value = "add-project")
-    public ResponseEntity<Object> addProject(AddProjectVM addProjectVM)
+    public ResponseEntity<Object> addProject(@RequestBody AddProjectVM addProjectVM)
     {
         try{
            authoritiesService.addProject(addProjectVM);
@@ -46,7 +48,7 @@ public class AuthoritiesController {
     }
 
     @PostMapping(value = "add-module")
-    public ResponseEntity<Object> addModule(AddModuleVM addModuleVM)
+    public ResponseEntity<Object> addModule(@RequestBody AddModuleVM addModuleVM)
     {
         try{
             authoritiesService.addModule(addModuleVM);
@@ -58,7 +60,7 @@ public class AuthoritiesController {
     }
 
     @PostMapping(value = "add-actions")
-    public ResponseEntity<Object> addActions(List<AddActionVM> addActionVMs)
+    public ResponseEntity<Object> addActions(@RequestBody List<AddActionVM> addActionVMs)
     {
         try{
             authoritiesService.addActions(addActionVMs);
