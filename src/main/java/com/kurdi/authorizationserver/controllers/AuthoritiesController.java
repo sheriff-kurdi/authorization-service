@@ -9,6 +9,7 @@ import com.kurdi.authorizationserver.repositories.AuthoritiesRepository;
 import com.kurdi.authorizationserver.services.AuthService;
 import com.kurdi.authorizationserver.services.AuthoritiesService;
 import com.kurdi.authorizationserver.vm.actions.AddActionVM;
+import com.kurdi.authorizationserver.vm.actions.AddActionsVM;
 import com.kurdi.authorizationserver.vm.modules.AddModuleVM;
 import com.kurdi.authorizationserver.vm.projects.AddProjectVM;
 
@@ -60,10 +61,10 @@ public class AuthoritiesController {
     }
 
     @PostMapping(value = "add-actions")
-    public ResponseEntity<Object> addActions(@RequestBody List<AddActionVM> addActionVMs)
+    public ResponseEntity<Object> addActions(@RequestBody AddActionsVM addActionsVM)
     {
         try{
-            authoritiesService.addActions(addActionVMs);
+            authoritiesService.addActions(addActionsVM);
            return new ResponseEntity<>("Created Successfully", HttpStatus.CREATED);
 
         }catch (Exception e){
