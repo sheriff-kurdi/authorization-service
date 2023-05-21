@@ -3,11 +3,11 @@ package com.kurdi.authorizationserver.services;
 import com.kurdi.authorizationserver.entities.Project;
 import com.kurdi.authorizationserver.entities.Module;
 import com.kurdi.authorizationserver.entities.Action;
-
+import com.kurdi.authorizationserver.entities.Authority;
 import com.kurdi.authorizationserver.repositories.ModulesRepository;
 import com.kurdi.authorizationserver.repositories.ProjectsRepository;
 import com.kurdi.authorizationserver.repositories.ActionsRepository;
-
+import com.kurdi.authorizationserver.repositories.AuthoritiesRepository;
 import com.kurdi.authorizationserver.vm.actions.AddActionVM;
 import com.kurdi.authorizationserver.vm.actions.AddActionsVM;
 import com.kurdi.authorizationserver.vm.modules.AddModuleVM;
@@ -31,6 +31,8 @@ public class AuthoritiesService {
     ModulesRepository modulesRepository;
     @Autowired
     ActionsRepository actionsRepository;
+    @Autowired
+    AuthoritiesRepository authoritiessRepository;
 
     public Project addProject(AddProjectVM addProjectVM) {
         Project project = Project.builder()
@@ -52,21 +54,33 @@ public class AuthoritiesService {
     }
 
     @Transactional
-    public List<Action> addActions(AddActionsVM addActionsVM) {
+    public List<Authority> addActions(AddActionsVM addActionsVM) {
+        Module module = this.modulesRepository.getById(addActionsVM.getModuleName());
         List<Action> actions = new ArrayList<>();
-        
+        List<Authority> authorities = new ArrayList<>();
+
         for (AddActionVM addActionVM : addActionsVM.getActions()) {
             Action action = Action.builder()
                     .name(addActionVM.getName())
                     .description(addActionVM.getDescription())
-                    .module(modulesRepository.getById(addActionVM.getModuleName()))
+                    .module(modulesRepository.getById(addActionsVM.getModuleName()))
                     .build();
 
             actions.add(action);
+
+            Authority authority = Authority.builder()
+                    .module(module)
+                    .project(module.getProject())
+                    .action(action)
+                    .build();
+
+            authority.setName();
+
+            authorities.add(authority);
         }
 
-
-        return this.actionsRepository.saveAll(actions);
+        this.actionsRepository.saveAll(actions);
+        return this.authoritiessRepository.saveAll(authorities);
     }
 
 }

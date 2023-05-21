@@ -7,6 +7,5 @@ import lombok.Data;
 public class AddActionVM {
     private String name;
     private String description;
-    private String moduleName;
 
 }

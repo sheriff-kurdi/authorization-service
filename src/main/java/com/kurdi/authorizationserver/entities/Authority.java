@@ -43,7 +43,7 @@ public class Authority implements Serializable {
 
     public void setName() {
         if (this.project != null && this.module != null && this.action != null) {
-            this.name = this.project.getName() + this.module.getName() + this.action.getName();
+            this.name = this.project.getName() + ":" + this.module.getName() + ":" +this.action.getName();
         }
     }
 
