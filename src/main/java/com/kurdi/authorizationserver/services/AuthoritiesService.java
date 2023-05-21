@@ -8,10 +8,13 @@ import com.kurdi.authorizationserver.repositories.ModulesRepository;
 import com.kurdi.authorizationserver.repositories.ProjectsRepository;
 import com.kurdi.authorizationserver.repositories.ActionsRepository;
 import com.kurdi.authorizationserver.repositories.AuthoritiesRepository;
+import com.kurdi.authorizationserver.vm.actions.ActionVM;
 import com.kurdi.authorizationserver.vm.actions.AddActionVM;
 import com.kurdi.authorizationserver.vm.actions.AddActionsVM;
 import com.kurdi.authorizationserver.vm.modules.AddModuleVM;
+import com.kurdi.authorizationserver.vm.modules.ModuleVM;
 import com.kurdi.authorizationserver.vm.projects.AddProjectVM;
+import com.kurdi.authorizationserver.vm.projects.ProjectVM;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,6 +48,15 @@ public class AuthoritiesService {
         return this.projectsRepository.save(project);
     }
 
+    public List<ProjectVM> listProjects() {
+        return this.projectsRepository.findAll().stream()
+                .map(project -> ProjectVM.builder()
+                        .name(project.getName())
+                        .description(project.getDescription())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     public Module addModule(AddModuleVM addModuleVM) {
         Module module = Module.builder()
                 .name(addModuleVM.getName())
@@ -51,6 +65,15 @@ public class AuthoritiesService {
                 .build();
 
         return this.modulesRepository.save(module);
+    }
+
+    public List<ModuleVM> listModules() {
+        return this.modulesRepository.findAll().stream()
+                .map(module -> ModuleVM.builder()
+                        .name(module.getName())
+                        .description(module.getDescription())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -83,4 +106,12 @@ public class AuthoritiesService {
         return this.authoritiessRepository.saveAll(authorities);
     }
 
+    public List<ActionVM> listActions() {
+        return this.modulesRepository.findAll().stream()
+                .map(action -> ActionVM.builder()
+                        .name(action.getName())
+                        .description(action.getDescription())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
