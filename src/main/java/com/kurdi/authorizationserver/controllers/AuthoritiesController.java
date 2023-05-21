@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("Authorities/")
+@RequestMapping("authorities/")
 public class AuthoritiesController {
     @Autowired
     AuthService authService;
