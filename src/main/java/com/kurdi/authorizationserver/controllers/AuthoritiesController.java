@@ -12,6 +12,7 @@ import com.kurdi.authorizationserver.vm.projects.AddProjectVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,18 @@ public class AuthoritiesController {
         }
     }
 
+    @GetMapping(value = "projects")
+    public ResponseEntity<Object> listProjects()
+    {
+        try{
+           authoritiesService.listProjects();
+           return new ResponseEntity<>(HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping(value = "add-module")
     public ResponseEntity<Object> addModule(@RequestBody AddModuleVM addModuleVM)
     {
@@ -53,12 +66,36 @@ public class AuthoritiesController {
         }
     }
 
+    @GetMapping(value = "modules")
+    public ResponseEntity<Object> listModules()
+    {
+        try{
+           authoritiesService.listProjects();
+           return new ResponseEntity<>(HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping(value = "add-actions")
     public ResponseEntity<Object> addActions(@RequestBody AddActionsVM addActionsVM)
     {
         try{
             authoritiesService.addActions(addActionsVM);
            return new ResponseEntity<>(HttpStatus.CREATED);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "actions")
+    public ResponseEntity<Object> listActions()
+    {
+        try{
+           authoritiesService.listActions();
+           return new ResponseEntity<>(HttpStatus.OK);
 
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
