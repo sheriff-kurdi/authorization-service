@@ -49,6 +49,8 @@ public class AuthoritiesService {
     }
 
     public List<ProjectVM> listProjects() {
+
+        List<Project> projects = this.projectsRepository.findAll();
         return this.projectsRepository.findAll().stream()
                 .map(project -> ProjectVM.builder()
                         .name(project.getName())

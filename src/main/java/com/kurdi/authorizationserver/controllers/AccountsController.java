@@ -2,7 +2,7 @@ package com.kurdi.authorizationserver.controllers;
 
 import com.kurdi.authorizationserver.entities.User;
 import com.kurdi.authorizationserver.services.AuthService;
-import com.kurdi.authorizationserver.vm.AddAuthoritiesRequest;
+import com.kurdi.authorizationserver.vm.DataResponse;
 import com.kurdi.authorizationserver.vm.UserNameAndPasswordAuthenticationRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +35,7 @@ public class AccountsController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("addAuthorities")
-    public ResponseEntity<User> addAuthorities(@RequestBody AddAuthoritiesRequest addAuthoritiesRequest) {
+    public ResponseEntity<User> addAuthorities(@RequestBody DataResponse addAuthoritiesRequest) {
         User user = authService.addAuthorities(addAuthoritiesRequest.getUserId(), addAuthoritiesRequest.getAuthorities());
         if (user.getUserName() == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -45,7 +45,7 @@ public class AccountsController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("removeAuthorities")
-    public ResponseEntity<User> removeAuthorities(@RequestBody AddAuthoritiesRequest addAuthoritiesRequest) {
+    public ResponseEntity<User> removeAuthorities(@RequestBody DataResponse addAuthoritiesRequest) {
         User user = authService.removeAuthorities(addAuthoritiesRequest.getUserId(), addAuthoritiesRequest.getAuthorities());
         if (user.getUserName() == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

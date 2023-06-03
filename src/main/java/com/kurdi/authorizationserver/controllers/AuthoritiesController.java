@@ -1,13 +1,14 @@
 package com.kurdi.authorizationserver.controllers;
 
-
-
 import com.kurdi.authorizationserver.repositories.AuthoritiesRepository;
 import com.kurdi.authorizationserver.services.AuthService;
 import com.kurdi.authorizationserver.services.AuthoritiesService;
+import com.kurdi.authorizationserver.vm.DataResponse;
 import com.kurdi.authorizationserver.vm.actions.AddActionsVM;
 import com.kurdi.authorizationserver.vm.modules.AddModuleVM;
 import com.kurdi.authorizationserver.vm.projects.AddProjectVM;
+
+import javax.xml.crypto.Data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
-@RequestMapping("authorities/")
+@RequestMapping("api/v1/authorities/")
 public class AuthoritiesController {
     @Autowired
     AuthService authService;
@@ -29,79 +29,77 @@ public class AuthoritiesController {
     @Autowired
     AuthoritiesRepository authoritiesRepository;
 
-
     @PostMapping(value = "add-project")
-    public ResponseEntity<Object> addProject(@RequestBody AddProjectVM addProjectVM)
-    {
-        try{
-           authoritiesService.addProject(addProjectVM);
-           return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Object> addProject(@RequestBody AddProjectVM addProjectVM) {
+        try {
+            authoritiesService.addProject(addProjectVM);
+            return new ResponseEntity<>(HttpStatus.CREATED);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "projects")
-    public ResponseEntity<Object> listProjects()
-    {
-        try{
-           authoritiesService.listProjects();
-           return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> listProjects() {
+        try {
+            DataResponse response = DataResponse.builder()
+            .data(authoritiesService.listProjects())
+            .build();
+            return new ResponseEntity<>(response, HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping(value = "add-module")
-    public ResponseEntity<Object> addModule(@RequestBody AddModuleVM addModuleVM)
-    {
-        try{
+    public ResponseEntity<Object> addModule(@RequestBody AddModuleVM addModuleVM) {
+        try {
             authoritiesService.addModule(addModuleVM);
             return new ResponseEntity<>(HttpStatus.CREATED);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "modules")
-    public ResponseEntity<Object> listModules()
-    {
-        try{
-           authoritiesService.listProjects();
-           return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> listModules() {
+        try {
 
-        }catch (Exception e){
+            DataResponse response = DataResponse.builder()
+            .data(authoritiesService.listProjects())
+            .build();
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping(value = "add-actions")
-    public ResponseEntity<Object> addActions(@RequestBody AddActionsVM addActionsVM)
-    {
-        try{
+    public ResponseEntity<Object> addActions(@RequestBody AddActionsVM addActionsVM) {
+        try {
             authoritiesService.addActions(addActionsVM);
-           return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "actions")
-    public ResponseEntity<Object> listActions()
-    {
-        try{
-           authoritiesService.listActions();
-           return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> listActions() {
+        try {
+            DataResponse response = DataResponse.builder()
+            .data(authoritiesService.listProjects())
+            .build();
+            return new ResponseEntity<>(response, HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 
 }
